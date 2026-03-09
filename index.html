@@ -14,6 +14,9 @@
     <!-- Icons (Font Awesome) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
+    <!-- QR Code library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    
     <style>
         /* ===== RESET & BASE ===== */
         * {
@@ -36,7 +39,7 @@
             position: relative;
         }
         
-        /* ===== CUSTOM CURSOR (optional, но круто) ===== */
+        /* ===== CUSTOM CURSOR ===== */
         .cursor {
             width: 10px;
             height: 10px;
@@ -601,6 +604,139 @@
             color: #B8B8B8;
         }
         
+        /* ===== QR CODE SECTION ===== */
+        .qr-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            margin-top: 40px;
+        }
+        
+        .qr-card {
+            background: #171717;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .qr-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 240, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.2);
+        }
+        
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 16px;
+            background: white;
+            padding: 8px;
+            border-radius: 16px;
+        }
+        
+        .qr-card h4 {
+            margin-bottom: 8px;
+            color: #00F0FF;
+        }
+        
+        .qr-card p {
+            color: #B8B8B8;
+            font-size: 14px;
+            word-break: break-all;
+        }
+        
+        /* ===== DONATION SECTION ===== */
+        .donation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            margin-top: 40px;
+        }
+        
+        .donation-card {
+            background: #171717;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+        }
+        
+        .donation-icon {
+            font-size: 48px;
+            color: #00F0FF;
+            margin-bottom: 16px;
+        }
+        
+        .donation-card h3 {
+            margin-bottom: 8px;
+        }
+        
+        .donation-card .card-number {
+            font-family: monospace;
+            font-size: 18px;
+            background: rgba(0, 240, 255, 0.1);
+            padding: 12px;
+            border-radius: 12px;
+            margin: 16px 0;
+            color: #00F0FF;
+            word-break: break-all;
+        }
+        
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #00F0FF;
+            color: #00F0FF;
+            padding: 8px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: #00F0FF;
+            color: #090909;
+        }
+        
+        /* ===== CONTACT SECTION ===== */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: #171717;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 600px;
+            margin: 40px auto 0;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+        }
+        
+        .contact-item i {
+            width: 30px;
+            color: #00F0FF;
+            font-size: 20px;
+        }
+        
+        .contact-item a, .contact-item span {
+            color: #F5F5F5;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        
+        .contact-item a:hover {
+            color: #00F0FF;
+        }
+        
         /* ===== DOWNLOAD SECTION ===== */
         .download-section {
             background: linear-gradient(135deg, #00F0FF10, #00FF9D10, #8B5CF610);
@@ -904,8 +1040,8 @@
                 <a href="#download">Download</a>
                 <a href="#setup">Setup</a>
                 <a href="#faq">FAQ</a>
-                <a href="#updates">Updates</a>
                 <a href="#contact">Contact</a>
+                <a href="#donate">Donate</a>
                 <a href="#download" class="nav-cta">Download Now</a>
             </div>
             
@@ -923,8 +1059,8 @@
         <a href="#download" onclick="toggleMobileMenu()">Download</a>
         <a href="#setup" onclick="toggleMobileMenu()">Setup</a>
         <a href="#faq" onclick="toggleMobileMenu()">FAQ</a>
-        <a href="#updates" onclick="toggleMobileMenu()">Updates</a>
         <a href="#contact" onclick="toggleMobileMenu()">Contact</a>
+        <a href="#donate" onclick="toggleMobileMenu()">Donate</a>
         <a href="#download" onclick="toggleMobileMenu()" style="color: #00F0FF;">Download Now</a>
     </div>
     
@@ -1119,6 +1255,90 @@
         </div>
     </section>
     
+    <!-- QR Codes Section (NEW) -->
+    <section class="section" id="connect">
+        <div class="section-header reveal">
+            <h2>Свяжись с <span class="gradient-text">нами</span></h2>
+            <p>Сканируй QR-код и присоединяйся</p>
+        </div>
+        
+        <div class="qr-grid" id="qrContainer">
+            <!-- QR коды будут сгенерированы через JavaScript -->
+        </div>
+    </section>
+    
+    <!-- Donation Section (NEW) -->
+    <section class="section" id="donate">
+        <div class="section-header reveal">
+            <h2>Поддержать <span class="gradient-text">проект</span></h2>
+            <p>Твоя помощь помогает нам развиваться</p>
+        </div>
+        
+        <div class="donation-grid">
+            <div class="donation-card reveal">
+                <div class="donation-icon">
+                    <i class="fab fa-paypal"></i>
+                </div>
+                <h3>PayPal</h3>
+                <p>edoe0739@gmail.com</p>
+                <a href="https://www.paypal.me/edoe0739" target="_blank" class="btn-primary" style="margin-top: 16px; display: inline-block;">
+                    <i class="fas fa-external-link-alt"></i> Перейти
+                </a>
+            </div>
+            
+            <div class="donation-card reveal">
+                <div class="donation-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <h3>Bank Card</h3>
+                <div class="card-number">5501 0410 0110 3756 0</div>
+                <button class="copy-btn" onclick="copyToClipboard('5501040011037560')">
+                    <i class="fas fa-copy"></i> Копировать
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section (NEW) -->
+    <section class="section" id="contact">
+        <div class="section-header reveal">
+            <h2>Наши <span class="gradient-text">контакты</span></h2>
+            <p>Свяжись с нами любым удобным способом</p>
+        </div>
+        
+        <div class="contact-info reveal">
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <a href="mailto:mirzoyantigran61@gmail.com">mirzoyantigran61@gmail.com</a>
+            </div>
+            
+            <div class="contact-item">
+                <i class="fab fa-instagram"></i>
+                <a href="https://www.instagram.com/armffsoft?igsh=ZG9pZzBrd29nNzR3" target="_blank">@armffsoft</a>
+            </div>
+            
+            <div class="contact-item">
+                <i class="fab fa-whatsapp"></i>
+                <a href="https://wa.me/qr/IK2UVLTM2D6GB1" target="_blank">WhatsApp</a>
+            </div>
+            
+            <div class="contact-item">
+                <i class="fab fa-youtube"></i>
+                <a href="https://youtube.com/@speedmak01?si=GjJEBD1oaIDSg-xn" target="_blank">@speedmak01</a>
+            </div>
+            
+            <div class="contact-item">
+                <i class="fab fa-tiktok"></i>
+                <a href="https://www.tiktok.com/@armffsoft_444?_r=1&_t=ZS-94YYVhKkxK" target="_blank">@armffsoft_444</a>
+            </div>
+            
+            <div class="contact-item">
+                <i class="fab fa-discord"></i>
+                <a href="#" target="_blank">Discord (скоро)</a>
+            </div>
+        </div>
+    </section>
+    
     <!-- Download Section -->
     <section class="section" id="download">
         <div class="download-section reveal">
@@ -1226,17 +1446,20 @@
             <a href="https://t.me/YourTigranmods" class="community-btn" target="_blank">
                 <i class="fab fa-telegram-plane"></i>
             </a>
-            <a href="#" class="community-btn" target="_blank">
-                <i class="fab fa-discord"></i>
-            </a>
-            <a href="#" class="community-btn" target="_blank">
-                <i class="fab fa-youtube"></i>
-            </a>
-            <a href="#" class="community-btn" target="_blank">
+            <a href="https://www.instagram.com/armffsoft?igsh=ZG9pZzBrd29nNzR3" class="community-btn" target="_blank">
                 <i class="fab fa-instagram"></i>
             </a>
-            <a href="#" class="community-btn" target="_blank">
+            <a href="https://wa.me/qr/IK2UVLTM2D6GB1" class="community-btn" target="_blank">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://youtube.com/@speedmak01?si=GjJEBD1oaIDSg-xn" class="community-btn" target="_blank">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://www.tiktok.com/@armffsoft_444?_r=1&_t=ZS-94YYVhKkxK" class="community-btn" target="_blank">
                 <i class="fab fa-tiktok"></i>
+            </a>
+            <a href="#" class="community-btn" target="_blank">
+                <i class="fab fa-discord"></i>
             </a>
         </div>
     </section>
@@ -1249,8 +1472,10 @@
                 <p style="color: #B8B8B8; margin-bottom: 20px;">Premium gaming companion for mobile devices</p>
                 <div style="display: flex; gap: 16px;">
                     <a href="https://t.me/YourTigranmods"><i class="fab fa-telegram"></i></a>
-                    <a href="#"><i class="fab fa-discord"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.instagram.com/armffsoft?igsh=ZG9pZzBrd29nNzR3"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/qr/IK2UVLTM2D6GB1"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://youtube.com/@speedmak01?si=GjJEBD1oaIDSg-xn"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.tiktok.com/@armffsoft_444?_r=1&_t=ZS-94YYVhKkxK"><i class="fab fa-tiktok"></i></a>
                 </div>
             </div>
             
@@ -1267,7 +1492,7 @@
                 <a href="#faq">FAQ</a>
                 <a href="#contact">Contact</a>
                 <a href="https://t.me/YourTigranmods">Telegram</a>
-                <a href="#">Help Center</a>
+                <a href="#donate">Donate</a>
             </div>
             
             <div class="footer-col">
@@ -1382,6 +1607,65 @@
                     target.scrollIntoView({ behavior: 'smooth' });
                 }
             });
+        });
+        
+        // Generate QR Codes
+        function generateQRCode(containerId, text, label, icon) {
+            const container = document.getElementById(containerId);
+            
+            const platforms = [
+                { url: 'https://t.me/YourTigranmods', name: 'Telegram', icon: 'fab fa-telegram' },
+                { url: 'https://www.instagram.com/armffsoft?igsh=ZG9pZzBrd29nNzR3', name: 'Instagram', icon: 'fab fa-instagram' },
+                { url: 'https://wa.me/qr/IK2UVLTM2D6GB1', name: 'WhatsApp', icon: 'fab fa-whatsapp' },
+                { url: 'https://www.tiktok.com/@armffsoft_444?_r=1&_t=ZS-94YYVhKkxK', name: 'TikTok', icon: 'fab fa-tiktok' },
+                { url: 'https://youtube.com/@speedmak01?si=GjJEBD1oaIDSg-xn', name: 'YouTube', icon: 'fab fa-youtube' },
+                { url: '#', name: 'Discord', icon: 'fab fa-discord' }
+            ];
+            
+            platforms.forEach(platform => {
+                const card = document.createElement('div');
+                card.className = 'qr-card reveal';
+                
+                const qrDiv = document.createElement('div');
+                qrDiv.className = 'qr-code';
+                qrDiv.id = `qr-${platform.name.toLowerCase()}`;
+                
+                const title = document.createElement('h4');
+                title.innerHTML = `<i class="${platform.icon}"></i> ${platform.name}`;
+                
+                const link = document.createElement('p');
+                link.textContent = platform.url;
+                
+                card.appendChild(qrDiv);
+                card.appendChild(title);
+                card.appendChild(link);
+                
+                container.appendChild(card);
+                
+                // Generate QR code
+                QRCode.toCanvas(document.getElementById(`qr-${platform.name.toLowerCase()}`), platform.url, {
+                    width: 150,
+                    margin: 1,
+                    color: {
+                        dark: '#00F0FF',
+                        light: '#ffffff'
+                    }
+                }, function(error) {
+                    if (error) console.error(error);
+                });
+            });
+        }
+        
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Номер скопирован!');
+            });
+        }
+        
+        // Initialize QR codes
+        document.addEventListener('DOMContentLoaded', () => {
+            generateQRCode('qrContainer');
         });
     </script>
 </body>
